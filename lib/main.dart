@@ -4,6 +4,9 @@ void main() {
   runApp(SimpleCalculator());
 }
 
+
+
+
 class SimpleCalculator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -14,6 +17,9 @@ class SimpleCalculator extends StatelessWidget {
     );
   }
 }
+
+
+
 
 class CalculatorHome extends StatefulWidget {
   @override
@@ -85,7 +91,6 @@ class _CalculatorHomeState extends State<CalculatorHome> {
                   : "Error";
               break;
           }
-          // Reset for next calculation
           _firstNumber = double.tryParse(_display);
           _operand = "";
           _secondNumber = null;
@@ -99,10 +104,9 @@ class _CalculatorHomeState extends State<CalculatorHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Calculator',style: TextStyle(color: Colors.white),),
+        title: const Text('Calculator'),
         backgroundColor: Colors.blue,
       ),
-
       body: Column(
         children: [
           Expanded(
@@ -110,10 +114,10 @@ class _CalculatorHomeState extends State<CalculatorHome> {
             child: Container(
               color: Colors.white,
               alignment: Alignment.bottomRight,
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Text(
                 _display,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 48,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
@@ -123,10 +127,9 @@ class _CalculatorHomeState extends State<CalculatorHome> {
           ),
           Expanded(
             flex: 5,
-            child:Container(
+            child: Container(
               color: Colors.grey[200],
-              child:  Column(
-
+              child: Column(
                 children: [
                   _buildButtonRow(["7", "8", "9", "/"]),
                   _buildButtonRow(["4", "5", "6", "X"]),
@@ -135,7 +138,7 @@ class _CalculatorHomeState extends State<CalculatorHome> {
                   _buildButtonRow(["CLEAR", "="]),
                 ],
               ),
-            )
+            ),
           ),
         ],
       ),
@@ -146,44 +149,45 @@ class _CalculatorHomeState extends State<CalculatorHome> {
     return Expanded(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
-        children: buttons.map((button) {
-          return Expanded(
-            child: Padding(
-              padding: EdgeInsets.all(2.0),
-
-              child: InkWell(
-
-                onTap: () {
-                  if (button == "CLEAR") {
-                    _clear();
-                  } else if (button == "=") {
-                    _calculate();
-                  } else if (["+", "-", "X", "/"].contains(button)) {
-                    _setOperand(button);
-                  } else {
-                    _appendNumber(button);
-                  }
-                },
-
-
-                child: Container(
-
-                  child: Center(
-                    child: Text(
-                      button,
-                      style: TextStyle(fontSize: 24,),
+        children: buttons
+            .map(
+              (button) => Expanded(
+                key: ValueKey(button), 
+                child: Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: InkWell(
+                    onTap: () {
+                      if (button == "CLEAR") {
+                        _clear();
+                      } else if (button == "=") {
+                        _calculate();
+                      } else if (["+", "-", "X", "/"].contains(button)) {
+                        _setOperand(button);
+                      } else {
+                        _appendNumber(button);
+                      }
+                    },
+                    child: Container(
+                      height: 80,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        // border: Border.all(color: Colors.grey),
+                      ),
+                      child: Center(
+                        child: Text(
+                          button,
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  color: Colors.white,
-                  height: 80,
-
-
-                )
+                ),
               ),
-            ),
-          );
-        }).toList(),
+            )
+            .toList(),
       ),
     );
   }
